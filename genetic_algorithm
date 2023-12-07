@@ -44,9 +44,12 @@ def gauss_mutate(vector):
 
     for i in range(1,len(vector)):
         if p >= random.uniform(0,1):
-            while (min <= vector[i] <= max):
-                n = gauss(0,sigma) #random number chosen from Normal distribution
-                vector[i]+= n
+            while True:
+                n = gauss(0,sigma) + vector[i] #random number chosen from Normal distribution
+                if (np.logical_or(min <= n, n <= max)[0] == True): #Comparison between numpy arrays requires logical_or function
+                    break
+            vector[i]+= n
+
     return vector
 
 population = initalize_population(POP_SIZE)
