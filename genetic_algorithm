@@ -2,22 +2,32 @@ import numpy as np
 from optproblems import cec2005
 
 n_dimensions = 2
-pop_size = 10
+n_iterations = 5
 
 function = cec2005.F2(n_dimensions)
 ideal = function(function.offsets[0:n_dimensions])
 
-adult_p = [] #Empty adult population
-adult_fitness = [] #Corresponding fitness list 
+#Initializing random adult population vector
+def initalize_population(pop_size:int):
+    population = []
+    for i in range(pop_size):
+        #creating population 
+        population.append(np.random.uniform(function.min_bounds, function.max_bounds,n_dimensions)) 
+    return population
 
+#Return fitness value for each member of population in list
+def assess_fitness(population:list):
+    population_fitness = []
+    for i in range(len(population)):
+        population_fitness.append(function(population[i])-ideal)
+    return population_fitness
 
-#Initializing random adult population and fitness  vectors,
-for i in range(pop_size):
-    #creating population 
-    adult_p.append(np.random.uniform(function.min_bounds, function.max_bounds,n_dimensions)) 
-    #Populating fitness value for each member of population in list
-    adult_fitness.append(function(adult_p[i])-ideal)
+# adult_p = initalize_population(10)
+# adult_fitness = assess_fitness(adult_p)
+# print(adult_fitness)
+#best = np.argmin(adult_fitness)
+#print(adult_p[best]) #fittest member of population location vector
 
-best = np.argmin(adult_fitness)
-
-print(adult_p[best]) #fittest member of population location vector
+# for i in range(n_iterations):
+#     for individual in adult_p:
+        
