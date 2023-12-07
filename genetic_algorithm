@@ -1,0 +1,13 @@
+import numpy as np 
+from optproblems import cec2005
+
+n_dimensions = 2
+pop_size = 10
+function = cec2005.F2(n_dimensions)
+
+P = [] #Empty adult population
+
+#Initializing random adult population vectors
+for i in range(pop_size):
+    P.append(np.random.rand(1,n_dimensions)) 
+    print(P[i])

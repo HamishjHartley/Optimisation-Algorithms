@@ -4,7 +4,6 @@ import random
 from sympy import *
 
 
-
 n_dimensions = 10
 
 n_iterations = 100
@@ -29,3 +28,5 @@ for i in range(n_iterations):
     print(rand)
 
 print("done")
+
+#
