@@ -47,7 +47,6 @@ def gauss_mutate(vector):
                 n = random.gauss(0,sigma)#random number chosen from Normal distribution
                 if (np.logical_and(n+vector[i]>=min, n+vector[i]<=max) == True): #Comparison between numpy arrays requires logical_or function
                     vector[i]= vector[i] +n
-                    print("added", vector[i])
                     break
     return vector
 
@@ -66,14 +65,13 @@ def genetic_algorithm(population:list, n_iterations:int):
             child_pop.append(gauss_mutate(child_b))
             #Mutate child_a, child_b
         population += child_pop
-        print(best)
-    return best
+    return population[best]
 
 population = initalize_population(POP_SIZE)
 
-solution = genetic_algorithm(population,1)
+solution = genetic_algorithm(population,100)
 
-print(solution)
+print(solution-ideal)
 
 #print(adult_fitness)
 
