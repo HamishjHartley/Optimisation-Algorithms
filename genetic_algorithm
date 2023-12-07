@@ -4,6 +4,7 @@ import numpy as np
 from optproblems import cec2005
 
 n_dimensions = 6
+n_iterations = 100
 POP_SIZE = 10
 
 function = cec2005.F2(n_dimensions)
@@ -50,6 +51,7 @@ def gauss_mutate(vector):
                     break
     return vector
 
+#Iterates through fitness assessment, selection and breeding, and population reassembly
 def genetic_algorithm(population:list, n_iterations:int):
     #Loop n_iteration times
     for i in range(n_iterations):
@@ -60,19 +62,15 @@ def genetic_algorithm(population:list, n_iterations:int):
             parent_b = population[i+1]
 
             child_a , child_b = one_point_crossover(parent_a, parent_b)
-
+            
+            #Mutate child_a, child_b    
             child_pop.append(gauss_mutate(child_a))
             child_pop.append(gauss_mutate(child_b))
-            #Mutate child_a, child_b
         population += child_pop
     return population[best]
 
 population = initalize_population(POP_SIZE)
-
-solution = genetic_algorithm(population,100)
+solution = genetic_algorithm(population,n_iterations)
 
 print(solution-ideal)
 
-#print(adult_fitness)
-
-#print(adult_p[best]) #fittest member of population location vector
