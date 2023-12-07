@@ -1,16 +1,17 @@
 import numpy as np 
 from optproblems import cec2005
 
-n_dimensions = 2
-n_iterations = 5
+n_dimensions = 6
+n_iterations = 1
+POP_SIZE = 10
 
 function = cec2005.F2(n_dimensions)
 ideal = function(function.offsets[0:n_dimensions])
 
 #Initializing random adult population vector
-def initalize_population(pop_size:int):
+def initalize_population(POP_SIZE:int):
     population = []
-    for i in range(pop_size):
+    for i in range(POP_SIZE):
         #creating population 
         population.append(np.random.uniform(function.min_bounds, function.max_bounds,n_dimensions)) 
     return population
@@ -20,14 +21,39 @@ def assess_fitness(population:list):
     population_fitness = []
     for i in range(len(population)):
         population_fitness.append(function(population[i])-ideal)
-    return population_fitness
+    best = np.argmin(population_fitness)
+    return best
 
-# adult_p = initalize_population(10)
-# adult_fitness = assess_fitness(adult_p)
-# print(adult_fitness)
-#best = np.argmin(adult_fitness)
+#Crosses over DNA of two parents to create 2 unique children
+def crossover(parent_a, parent_b):
+    a1,a2 = np.split(parent_a,2)
+    b1,b2 = np.split(parent_b,2)
+
+    child_a =np.concatenate((a1,b2))
+    child_b= np.concatenate((a2,b1))
+
+    return child_a,child_b
+
+
+population = initalize_population(POP_SIZE)
+
+#Loop n_iteration times
+for i in range(n_iterations):
+    best = assess_fitness(population) 
+    child_pop = []
+    for i in range(0,POP_SIZE,2):
+        parent_a = population[i] 
+        parent_b = population[i+1]
+
+        child_a , child_b = crossover(parent_a, parent_b)
+
+        child_pop.append(child_a)
+        child_pop.append(child_b)
+        #Mutate child_a, child_b
+    population += child_pop
+
+
+
+#print(adult_fitness)
+
 #print(adult_p[best]) #fittest member of population location vector
-
-# for i in range(n_iterations):
-#     for individual in adult_p:
-        
