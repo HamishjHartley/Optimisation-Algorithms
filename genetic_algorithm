@@ -4,7 +4,6 @@ import numpy as np
 from optproblems import cec2005
 
 n_dimensions = 6
-n_iterations = 1
 POP_SIZE = 10
 
 function = cec2005.F2(n_dimensions)
@@ -38,38 +37,43 @@ def one_point_crossover(vector_1, vector_2):
 #Returns a vector which has been mutated using Guassian convolution
 def gauss_mutate(vector):
     p = 1 #probability of adding noise to element in vector
-    sigma = 2 #variance of Normal distribution to convolve with
-    min = function.min_bounds
-    max = function.max_bounds
+    sigma = 0.005 #variance of Normal distribution to convolve with
+    min = -100
+    max = 100
 
     for i in range(1,len(vector)):
         if p >= random.uniform(0,1):
             while True:
-                n = gauss(0,sigma) + vector[i] #random number chosen from Normal distribution
-                if (np.logical_or(min <= n, n <= max)[0] == True): #Comparison between numpy arrays requires logical_or function
+                n = random.gauss(0,sigma)#random number chosen from Normal distribution
+                if (np.logical_and(n+vector[i]>=min, n+vector[i]<=max) == True): #Comparison between numpy arrays requires logical_or function
+                    vector[i]= vector[i] +n
+                    print("added", vector[i])
                     break
-            vector[i]+= n
-
     return vector
+
+def genetic_algorithm(population:list, n_iterations:int):
+    #Loop n_iteration times
+    for i in range(n_iterations):
+        best = assess_fitness(population) 
+        child_pop = []
+        for i in range(0,POP_SIZE,2):
+            parent_a = population[i] 
+            parent_b = population[i+1]
+
+            child_a , child_b = one_point_crossover(parent_a, parent_b)
+
+            child_pop.append(gauss_mutate(child_a))
+            child_pop.append(gauss_mutate(child_b))
+            #Mutate child_a, child_b
+        population += child_pop
+        print(best)
+    return best
 
 population = initalize_population(POP_SIZE)
 
-#Loop n_iteration times
-for i in range(n_iterations):
-    best = assess_fitness(population) 
-    child_pop = []
-    for i in range(0,POP_SIZE,2):
-        parent_a = population[i] 
-        parent_b = population[i+1]
+solution = genetic_algorithm(population,1)
 
-        child_a , child_b = one_point_crossover(parent_a, parent_b)
-
-        child_pop.append(gauss_mutate(child_a))
-        child_pop.append(gauss_mutate(child_b))
-        #Mutate child_a, child_b
-    population += child_pop
-
-
+print(solution)
 
 #print(adult_fitness)
 
