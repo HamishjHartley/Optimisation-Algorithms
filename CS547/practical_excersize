@@ -1,0 +1,83 @@
+CS547: Advanced Topics in Software Engineering
+Practical Exercise - Evolving "Welcome to CS547!"
+Completion requirements
+This initial exercise is going to involve implementing two algorithms - a hill climber and a genetic algorithm - to evolve (by search) the string, "Welcome to CS547!". This may sound odd - we already know what the solution is! - but we are going to start from a random point and use out algorithms to "move" our initial solutions towards this target string. Your task is to implement both the hill climbing algorithm and the genetic algorithm from first principles to perform this task. 
+
+There are several web pages and blog postings on how to tackle problems like this but it is important to develop this all by yourself - the main purpose of the exercise is to help you develop a sound understanding of the mechanics of GAs and hill climbers (and besides, using or submitting a solution developed by someone else as your own is a clear case of academic dishonesty).
+
+For this initial exercise you need to complete the following 3 tasks (see below for the suggested order in which to tackle these):
+
+Implement from first principles a simple genetic algorithm which has the goal of evolving the string, "Welcome to CS547!"
+Evaluate how well it compares against a random solution. How many iterations does it take the GA to converge on a solution, and how many by just using random data?
+Implement a hill-climber to solve the same problem and compare the performance of this against the GA and random search.
+The implementation should be done in Python
+
+Suggestions on how to approach this
+Remember the first things to think about initially are the representation - how a solution to this problem can be expressed in a form that can be manipulated by the GA - and the fitness function - how to evaluate and rank solutions and steer them towards the result you are after. 
+
+I would suggest tacking this as follows:
+
+Decide on the representation of the solution
+Work on a function to generate a random solution (this will be useful over several algorithms).
+Work on the fitness function to score solutions. There are several possibilities that you can use here.
+Work on a function to generate and score multiple random solutions.
+Move onto the hill climbing algorithm as it is simpler than the GA. The main thing to consider here is the function to define the neighbouring solutions to evaluate (again there are several options). Once you have defined this then you have all the components of the hill climber in place and you can then define the main algorithm.
+Finally work on the GA. In addition to the components already mentioned you will require functions to: 
+create a population of solutions (and think about how this is going to be stored in Python), 
+score the fitness of the population, 
+select candidate parents and recombine them to generate a new population (the next generation) - this may need several functions, 
+mutate this next generation
+implement the main GA loop once all the above functions are in place and tested 
+Your solution need not be beautifully engineered - the main purpose is for you to gain a sound understanding of the algorithms so concentrate on just building the minimum viable product and keep it simple. There will be support in the lab sessions to help out with this but also feel free to ask questions on the module mattermost channel. I will also provide some Jupyter notebooks with the key elements of the solutions that you can use as a building block for this.
+
+Some Hints and Tips...
+Below are a few suggestions that may help with this problem.
+
+Representation
+Several of the initial examples we looked at aimed to represent the problem as a binary string This is not necessary and using something like a character-based representation is fine. You may also set the length of the string to be the same as that of the target string
+
+Fitness Function 
+This will vary according to how to you approach the problem, but some important principles to remember We need to be able to identify when one solution is better than another We need to steer the search in the right direction - towards the solution It will also help us identify when we have found a solution! Also, it is okay to use the target string “Welcome to CS547!” in the fitness function.
+
+Initialising the Population
+This initial population is a randomly generated set of possible solutions. There is no need to seed the population with solutions that are more considered. Feel free to restrict the set of possible values to something reasonable e.g. the set of printable ASCII characters
+
+Evaluating Fitness
+You usually need some way of associating the fitness with each individual (or alternatively you could call the fitness function each time it was required), but this may influence how you decide to store the solutions.
+
+Selecting Parents
+There are several ways to do this but I would suggest a simple version of truncation selection or tournament selection (both easy to implement). Note that selection is with replacement - i.e. individuals may appear as a parent several times We need as many parents as there are members in the population (the population size stays the same between generations).
+
+Truncation Selection
+Rank all the individuals according to fitness and then choose the top n% 
+Randomly select parents from this subset
+Remember that selection is with replacement so the lower the value of n, the more likely that an individual will be chosen multiple times as a parent which will lower the diversity of solutions. 
+
+Tournament Selection: 
+Randomly select a small subset of the population 
+Choose the fittest individual from this subset 
+The fittest individual then becomes the first parent 
+Repeat for the second parent
+(And keep repeating until you have selected enough pairs of parents).
+
+Crossover
+This is governed by the crossover rate which may be supplied as a parameter or coded as a constant (e.g. 0.75). You will need to generate a random number and compare it against the crossover rate to determine if crossover takes place. If it does, then parents are recombined to generate offspring which form part of the new population. If it doesn’t, then the unmodified parents form part of the new population
+
+Mutation
+This takes place once the new population is completely generated and is governed by the mutation rate (typically quite small, such as 0.05).  Again provide this as a parameter or a constant. Mutation should be a small change and thinking about a “neighbourhood” in the hill climber can help you decide on what form this should take.
+
+Managing Generations
+Once the above steps are complete, the newly generated population becomes the one we consider at the next iteration of the algorithm and the old population is discarded.
+I strongly recommend keeping the new and old populations completely separate (rather than trying to modify a population for example).
+
+Monitoring Progress
+It is a good idea to print out some useful information, particularly when developing the algorithm (algorithms like this can be quite hard to test and debug!). For example: generation number, highest fitness, fittest individual...
+
+Comparison with Random
+The random generation of solution will be the same as the initial population creation stage of the GA.
+You will need to run it a number of times to serve as a baseline. For this problem, see how many random solutions need to be generated to find a solution, or state how many were tried (this should be a reasonably large number - e.g. 1000) and what the best solution achieved was and its fitness.  It is not necessary to find a solution using random search (life is too short...)
+
+Hill Climber
+This also needs a fitness function to compare solutions which it can chare with the GA.
+The  critical part is identifying the neighbourhood i.e. what solutions are “next” to the current one (there is no right answer to this as there are several possibilities). The size of neighbourhood is important: it has to be large enough to allow the search to proceed at a reasonable pace, but not so large as to make evaluating all neighbours a costly process
+
