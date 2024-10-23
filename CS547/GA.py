@@ -6,10 +6,11 @@ import numpy as np
 
 #n_dimensions = 6
 n_iterations = 100
-POP_SIZE = 10
+rate = 0.05
+POP_SIZE = 50
 
+# Convert ideal to string list so it can be mutable
 ideal = "Welcome to CS547!"
-alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !"
 
 def fitness(input:str, ideal:str):
     fitness = 0
@@ -27,18 +28,31 @@ def initalize_population(POP_SIZE:int):
     population = []
     for i in range(POP_SIZE):
         #creating population 
-        random_string = ''.join((alphabet[(random.randint(0,51))]) for i in range(len(ideal)))
-        population.append(random_string) 
-    print(population)
+        random_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(17))
+        population.append([random_string,fitness(random_string,ideal)])
     return population
 
-#Return fitness value for each member of population in list
-def assess_fitness(population:list):
+#Returns best member of population in list
+def best(population:list):
+
+
     population_fitness = []
     for i in range(len(population)):
-        population_fitness.append(fitness(population[i],ideal))
-    best = np.argmin(population_fitness)
+        population_fitness.append(fitness(population[i][0],ideal))
+    best = min(population_fitness, key=lambda x:abs(x-0)) # finds closest element to 0
     return best
+
+def top_50(population:list):
+    top_50 = []
+    for i in range(int(len(population)/2)):
+        top_50.append(best(population))
+        # remove old best from array 
+        population.pop(population.index(best(population)))
+    print(top_50)
+    return population
+
+population = initalize_population(10)
+top_50(population)
 
 #One point crossover of two parents to create 2 unique children
 def one_point_crossover(vector_1, vector_2):
@@ -49,43 +63,34 @@ def one_point_crossover(vector_1, vector_2):
             vector_1[i] ,vector_2[i] = vector_2[i] ,vector_1[i]
     return vector_1, vector_2
 
-#Returns a vector which has been mutated using Guassian convolution
-def gauss_mutate(vector):
-    p = 1 #probability of adding noise to element in vector
-    sigma = 0.005 #variance of Normal distribution to convolve with
-    min = -100
-    max = 100
-
-    for i in range(1,len(vector)):
-        if p >= random.uniform(0,1):
-            while True:
-                n = random.gauss(0,sigma)#random number chosen from Normal distribution
-                if (np.logical_and(n+vector[i]>=min, n+vector[i]<=max) == True): #Comparison between numpy arrays requires logical_or function
-                    vector[i]= vector[i] +n
-                    break
+# Random mutation
+def mutate(vector:list, rate:int):
+    for i in range(len(vector)):
+        if rate >= random.uniform(0,1):
+            vector[i] = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits))
     return vector
 
 #Iterates through fitness assessment, selection and breeding, and population reassembly
 def genetic_algorithm(population:list, n_iterations:int):
     #Loop n_iteration times
     for i in range(n_iterations):
-        best = assess_fitness(population) 
+        print("Iteration", i)
+        best = best(population) 
         child_pop = []
-        for i in range(0,POP_SIZE,2):
+        for i in range(0,POP_SIZE-1,2):
             parent_a = population[i] 
             parent_b = population[i+1]
 
             child_a , child_b = one_point_crossover(parent_a, parent_b)
-            
+
             #Mutate child_a, child_b    
-            child_pop.append(gauss_mutate(child_a))
-            child_pop.append(gauss_mutate(child_b))
+            child_pop.append(mutate(child_a,rate))
+            child_pop.append(mutate(child_b,rate))
         population += child_pop
+        
     return population[best]
 
 #population = initalize_population(POP_SIZE)
 #solution = genetic_algorithm(population,n_iterations)
 
-#print(solution-ideal)
-
-
+#print(solution)
