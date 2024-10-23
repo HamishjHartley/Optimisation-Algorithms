@@ -4,7 +4,6 @@ import secrets
 from random import gauss
 import numpy as np 
 
-
 #n_dimensions = 6
 n_iterations = 100
 POP_SIZE = 10
@@ -12,13 +11,12 @@ POP_SIZE = 10
 ideal = "Welcome to CS547!"
 alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !"
 
-
 def fitness(input:str, ideal:str):
     fitness = 0
     # For each character in input string
     for i,char in enumerate(input):
         # Check distance of char in target string
-        distance = ord(ideal[i] - ord(input[i]))
+        distance = ord(ideal[i]) - ord(input[i])
         # add distance to accumlative fitness value
         fitness += distance
     # return fitness value
@@ -34,13 +32,11 @@ def initalize_population(POP_SIZE:int):
     print(population)
     return population
 
-initalize_population(10)
-
 #Return fitness value for each member of population in list
 def assess_fitness(population:list):
     population_fitness = []
     for i in range(len(population)):
-        population_fitness.append(function(population[i])-ideal)
+        population_fitness.append(fitness(population[i],ideal))
     best = np.argmin(population_fitness)
     return best
 
