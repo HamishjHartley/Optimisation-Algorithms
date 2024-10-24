@@ -32,15 +32,11 @@ def initalize_population(POP_SIZE:int):
         population.append([random_string,fitness(random_string,ideal)])
     return population
 
-#Returns best member of population in list
-def best(population:list):
-
-
-    population_fitness = []
-    for i in range(len(population)):
-        population_fitness.append(fitness(population[i][0],ideal))
-    best = min(population_fitness, key=lambda x:abs(x-0)) # finds closest element to 0
-    return best
+# Returns best member of population
+def best(population: list):
+    # Find the individual with the best fitness
+    best_individual = min(population, key=lambda x: abs(fitness(x[0], ideal)))
+    return best_individual  # Return the individual and its fitness
 
 def top_50(population:list):
     top_50 = []
