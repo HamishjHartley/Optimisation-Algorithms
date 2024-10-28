@@ -8,15 +8,23 @@ target = "Welcome to CS547!"
 #Population size and other constants - these can be changed.
 pop_size=50
 crossover_rate = 0.75
-mutation_rate = 0.05
+mutation_rate = 0.025
 
 def fitness(input:str):
+    fitness = []
     # For each character in input string
     for i,char in enumerate(input):
         # Check distance of char in target string
-        fitness = (ord(target[i]) - ord(input[i])) * -1
+        val = (ord(target[i]) - ord(input[i])) 
+        fitness.append(abs(val))
+    fitness = -sum(fitness) 
     # return fitness value
     return fitness
+
+# test the above (precise results will depend on your function)
+# print(fitness("Welcome to CS547!")) # output should be the highest score
+# print(fitness("wolcoNeXt!dCSe47$")) # output should be a mid-range score
+# print(fitness("This is!miles off")) # output should be the lowest score
 
 def gen_individual():
     random_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(17))
@@ -38,7 +46,6 @@ def fittest_individual(population:list):
     best = min(population, key=lambda x: abs(fitness(x[0])))
     return best
     
-
 def find_top_50(population:list):
     top_50 = []
     for i in range(int(len(population)/2)):
@@ -91,8 +98,7 @@ scored_pop = eval_population(pop)
 i = 0
 print("Generation",i)
 print(fittest_individual(scored_pop))
-#while fittest_individual(scored_pop)[1] >0:
-while i < 5:
+while fittest_individual(scored_pop)[1] < 0:
     i += 1
     new_pop = []
     new_pop = select_and_generate_new_population(scored_pop)
@@ -101,5 +107,4 @@ while i < 5:
     scored_pop = eval_population(pop)
     print("Generation",i)
     print(fittest_individual(scored_pop))
-    print(scored_pop)
     
