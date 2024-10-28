@@ -1,11 +1,12 @@
 import string
 import random
-random.seed(42) # initialse and make repeatable
 from operator import itemgetter
 
-# The target string as we will be making reference to that.
+# Target string
 target = "Welcome to CS547!"
-#Population size and other constants - these can be changed.
+
+# Constants
+random.seed(42) 
 pop_size=50
 crossover_rate = 0.75
 mutation_rate = 0.03
@@ -49,6 +50,7 @@ def find_top_50(population:list):
         population.pop(population.index(fittest_individual(population)))
     return top_50
 
+# One-point crossover
 def crossover(parent1, parent2):
     ind1, _ = parent1
     ind2, _ = parent2
@@ -63,7 +65,6 @@ def crossover(parent1, parent2):
     # Return children with fitness initialized to 0
     return [child1, 0], [child2, 0]
 
-
 def select_and_generate_new_population(population):
     child_pop = []
     selected_pop = find_top_50(population)
@@ -75,6 +76,10 @@ def select_and_generate_new_population(population):
         child_pop.append(child_b)
     return child_pop
 
+new = gen_population()
+pop = eval_population(new)
+print(crossover(("abcdefg",12),("hijklmn",34)))
+
 def mutate(population):
     for individual in population:
         individual_list = list(individual[0])
@@ -84,23 +89,22 @@ def mutate(population):
                 individual_list[i] = random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits+ string.whitespace + string.punctuation)
         
         individual[0] = ''.join(individual_list)
-    
     return population
 
 # Main GA loop
-# Below is a suggestion of how you might put this together. Variations are possible
-pop = gen_population()
-scored_pop = eval_population(pop)
-i = 0
-print("Generation",i)
-print(fittest_individual(scored_pop))
-while fittest_individual(scored_pop)[1] < 0:
-    i += 1
-    new_pop = []
-    new_pop = select_and_generate_new_population(scored_pop)
-    mutated_pop = mutate(new_pop)
-    pop = mutated_pop
+def genetic_algorithm():
+    pop = gen_population()
     scored_pop = eval_population(pop)
+    i = 0
     print("Generation",i)
     print(fittest_individual(scored_pop))
-    
+    while fittest_individual(scored_pop)[1] < 0:
+        i += 1
+        new_pop = []
+        new_pop = select_and_generate_new_population(scored_pop)
+        mutated_pop = mutate(new_pop)
+        pop = mutated_pop
+        scored_pop = eval_population(pop)
+        print("Generation",i)
+        print(fittest_individual(scored_pop))
+
