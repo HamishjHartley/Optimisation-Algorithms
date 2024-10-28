@@ -1,6 +1,5 @@
 import string
 import random
-from operator import itemgetter
 
 # Target string
 target = "Welcome to CS547!"
@@ -76,10 +75,6 @@ def select_and_generate_new_population(population):
         child_pop.append(child_b)
     return child_pop
 
-new = gen_population()
-pop = eval_population(new)
-print(crossover(("abcdefg",12),("hijklmn",34)))
-
 def mutate(population):
     for individual in population:
         individual_list = list(individual[0])
@@ -107,4 +102,3 @@ def genetic_algorithm():
         scored_pop = eval_population(pop)
         print("Generation",i)
         print(fittest_individual(scored_pop))
-
