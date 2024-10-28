@@ -8,7 +8,7 @@ target = "Welcome to CS547!"
 #Population size and other constants - these can be changed.
 pop_size=50
 crossover_rate = 0.75
-mutation_rate = 0.025
+mutation_rate = 0.03
 
 def fitness(input:str):
     fitness = []
@@ -21,13 +21,8 @@ def fitness(input:str):
     # return fitness value
     return fitness
 
-# test the above (precise results will depend on your function)
-# print(fitness("Welcome to CS547!")) # output should be the highest score
-# print(fitness("wolcoNeXt!dCSe47$")) # output should be a mid-range score
-# print(fitness("This is!miles off")) # output should be the lowest score
-
 def gen_individual():
-    random_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(17))
+    random_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits+ string.whitespace + string.punctuation) for _ in range(17))
     return random_string
 
 def gen_population():
@@ -68,6 +63,7 @@ def crossover(parent1, parent2):
     # Return children with fitness initialized to 0
     return [child1, 0], [child2, 0]
 
+
 def select_and_generate_new_population(population):
     child_pop = []
     selected_pop = find_top_50(population)
@@ -85,7 +81,7 @@ def mutate(population):
         
         for i in range(len(individual_list)):
             if random.uniform(0, 1) < mutation_rate:
-                individual_list[i] = random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits)
+                individual_list[i] = random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits+ string.whitespace + string.punctuation)
         
         individual[0] = ''.join(individual_list)
     
