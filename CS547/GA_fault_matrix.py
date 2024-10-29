@@ -8,11 +8,11 @@ from random import shuffle
 with open('C:/Users/theha/Documents/GitHub/Optimisation-Algorithms/CS547/newsmallfaultmatrix.txt') as f: lines = f.readlines()
 
 # Simplifing for 5 inputs
-matrix = lines[0:5]
+matrix = lines
 
 # Constants
 random.seed(42) 
-pop_size=10
+pop_size=50
 crossover_rate = 0.75
 mutation_rate = 0.05
 
@@ -48,7 +48,6 @@ def fitness(suite:list):
     totalFaultsRevealed = sumOfFirstReveals
     # Calculate Average Percentage of faults detected 
     APFD = 1 - (totalFaultsRevealed / (n * m) + (1 / (2 * n)))
-    print("APFD:", APFD)
     return APFD
 
 # Generate random configuration of test case ordering
@@ -74,7 +73,6 @@ def eval_population(population:list):
 
 def fittest_individual(population:list):
     max_value = max(population, key=lambda x: x[1])
-    print(max_value)
     return max_value
     
 def find_top_50(population:list):
@@ -117,11 +115,9 @@ def mutate(population):
         
         for i in range(len(individual_list)):
             if random.uniform(0, 1) < mutation_rate:
-                print(individual_list[i])
                 swap = random.randint(0,len(individual_list)-1)
                 individual_list[i], individual_list[swap] = individual_list[swap],individual_list[i]
-        
-        #individual[0] = ''.join(individual_list)
+
     return population
 
 # Main GA loop
@@ -140,6 +136,6 @@ def genetic_algorithm():
         pop = mutated_pop
         scored_pop = eval_population(pop)
         print("Generation",i)
-        print(fittest_individual(scored_pop))
+        print("Fittest individual", fittest_individual(scored_pop)[0][1][0], "APFD value:",fittest_individual(scored_pop)[1] )
 
 genetic_algorithm()
