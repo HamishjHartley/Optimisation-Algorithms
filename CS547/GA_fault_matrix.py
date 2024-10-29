@@ -3,7 +3,6 @@ import random
 from random import shuffle
 
 # Identify test cases which have the highest coverage, 
-# i.e which have the most 1s / least 0s. 
 
 # Input text file
 with open('C:/Users/theha/Documents/GitHub/Optimisation-Algorithms/CS547/newsmallfaultmatrix.txt') as f: lines = f.readlines()
@@ -25,39 +24,31 @@ def process_input(input:list):
         input[i] = (input[i][0:length]).split(',')
     return input
 
-#     FUNCTION CalculateAPFD(testSuite, faults):
+# Calculate Average Percentage of faults detected, determining fitness of solution
 def fitness(suite:list):
     faults = []
     for test in suite:
-        test.pop(0)
         faults.append(test)
-#     n = LENGTH(testSuite)  // Number of test cases
-    n = len(suite)
-#     m = LENGTH(faults)     // Number of faults
-    m = len(faults)
-#     totalFaultsRevealed = 0
+    n = len(suite) # Number of test cases
+    m = len(faults) # Number of faults
+
     totalFaultsRevealed = 0
-#     sumOfFirstReveals = 0
     sumOfFirstReveals = 0
 
     max_length = max(len(faults[0]) for sublist in faults)
-#     FOR each fault in faults:
-    # Determine the maximum number of elements in the sublists
+    # For each fault in faults
     for i in range(max_length):
         for j,fault in enumerate(faults):
-            if i < len(fault):  # Check if the index exists in the sublist
-                print("Index:",i)
-                print(fault[i])
+            if i < len(fault):  
                 if fault[i] =='1':
-                    print("Found fault at:", fault[j])
                     Tfi = j # TFi = Index of the first test case in testSuite that reveals fault
                     sumOfFirstReveals += Tfi # sumOfFirstReveals += TFi
                     break
+
     totalFaultsRevealed = sumOfFirstReveals
-    print("Total faults revealed",totalFaultsRevealed)
-#     // Calculate APFD using the formula
+    # Calculate Average Percentage of faults detected 
     APFD = 1 - (totalFaultsRevealed / (n * m) + (1 / (2 * n)))
-    print(APFD)
+    print("APFD:", APFD)
     return APFD
 
 # Generate random configuration of test case ordering
@@ -76,16 +67,17 @@ def gen_population(matrix:list):
 
 def eval_population(population:list):
     for i in range(len(population)):
+        #print("Iteration:", i)
         population[i][1] = fitness(population[i][0])
-        print(population[i][0])
+        #print("Individual: ",population[i][0])
     return population
 
 proc_matrix = process_input(matrix) # Process the input
 
 population = gen_population(proc_matrix) # Generate population from processed input
 
-fitness(population[0][0])
-print(population[0][0])
+scored = eval_population(population)
+print(scored)
 
 
 def fittest_individual(population:list):
