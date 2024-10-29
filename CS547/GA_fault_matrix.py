@@ -14,7 +14,7 @@ matrix = lines
 random.seed(42) 
 pop_size=50
 crossover_rate = 0.75
-mutation_rate = 0.05
+mutation_rate = 0.005
 
 # Processes input into usable state (Comma separated list)
 def process_input(input:list):
