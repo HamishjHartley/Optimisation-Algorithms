@@ -1,5 +1,6 @@
 import string
 import random
+from random import shuffle
 
 # Identify test cases which have the highest coverage, 
 # i.e which have the most 1s / least 0s. 
@@ -8,7 +9,7 @@ import random
 with open('C:/Users/theha/Documents/GitHub/Optimisation-Algorithms/CS547/newsmallfaultmatrix.txt') as f: lines = f.readlines()
 
 # Simplifing for 5 inputs
-matrix = lines[0:4]
+matrix = lines[0:5]
 
 # Constants
 random.seed(42) 
@@ -16,11 +17,15 @@ pop_size=50
 crossover_rate = 0.75
 mutation_rate = 0.03
 
+def process_input(input:list):
+    for i in range(len(input)):
+        # Delimiting string by commas
+        length = len(input[i])-1
+        input[i] = (input[i][0:length]).split(',')
+    return input
+
 def fitness(input:str):
     fitness = 0
-    # Delimiting string by commas
-    length = len(input)-1
-    input = (input[1:length]).split(',')
     input.pop(0) # Remove first element
     print(input)
     # For each test in input string
@@ -29,13 +34,16 @@ def fitness(input:str):
         if input[i] == '1':
             print("Adding 1 to fitness")
             fitness += 1
-    print(fitness)
     # return fitness value
     return fitness
 
-def gen_individual():
-    random_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits+ string.whitespace + string.punctuation) for _ in range(17))
-    return random_string
+# Generate random configuration of test case ordering
+def gen_individual(matrix:list):
+    test_set = random.sample(matrix, len(matrix))
+    print(test_set)
+    return test_set
+
+proc_matrix = process_input(matrix)
 
 def gen_population():
     population = []
