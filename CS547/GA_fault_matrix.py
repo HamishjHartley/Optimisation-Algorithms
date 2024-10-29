@@ -33,10 +33,8 @@ def fitness(suite:list):
         faults.append(test)
 #     n = LENGTH(testSuite)  // Number of test cases
     n = len(suite)
-    print("n value:",n)
 #     m = LENGTH(faults)     // Number of faults
     m = len(faults)
-    print("m value:", m)
 #     totalFaultsRevealed = 0
     totalFaultsRevealed = 0
 #     sumOfFirstReveals = 0
@@ -49,23 +47,17 @@ def fitness(suite:list):
         for j,fault in enumerate(faults):
             if i < len(fault):  # Check if the index exists in the sublist
                 print("Index:",i)
-                print("Fault number", j)
                 print(fault[i])
                 if fault[i] =='1':
                     print("Found fault at:", fault[j])
-                # TFi = Index of the first test case in testSuite that reveals fault
-                    Tfi = j
-                # sumOfFirstReveals += TFi
-                    sumOfFirstReveals += Tfi
-    # totalFaultsRevealed = sumOfFirstReveals
+                    Tfi = j # TFi = Index of the first test case in testSuite that reveals fault
+                    sumOfFirstReveals += Tfi # sumOfFirstReveals += TFi
+                    break
     totalFaultsRevealed = sumOfFirstReveals
-    print(totalFaultsRevealed)
-
+    print("Total faults revealed",totalFaultsRevealed)
 #     // Calculate APFD using the formula
-#     APFD = 1 - (totalFaultsRevealed / (n * m) + (1 / (2 * n)))
     APFD = 1 - (totalFaultsRevealed / (n * m) + (1 / (2 * n)))
     print(APFD)
-#     RETURN APFD
     return APFD
 
 # Generate random configuration of test case ordering
