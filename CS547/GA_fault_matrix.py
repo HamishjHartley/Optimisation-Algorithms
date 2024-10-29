@@ -19,7 +19,9 @@ mutation_rate = 0.03
 def fitness(input:str):
     fitness = 0
     # Delimiting string by commas
-    input = (input[1:20]).split(',')
+    length = len(input)-1
+    input = (input[1:length]).split(',')
+    input.pop(0) # Remove first element
     print(input)
     # For each test in input string
     for i in range(len(input)):
@@ -30,8 +32,6 @@ def fitness(input:str):
     print(fitness)
     # return fitness value
     return fitness
-
-fitness(matrix[0])
 
 def gen_individual():
     random_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits+ string.whitespace + string.punctuation) for _ in range(17))
