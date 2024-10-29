@@ -11,3 +11,4 @@ class Perceptron():
 
     def sigmoid(x:int):
         return 1 / (1+math.exp(-x))
+    

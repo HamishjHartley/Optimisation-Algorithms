@@ -102,3 +102,5 @@ def genetic_algorithm():
         scored_pop = eval_population(pop)
         print("Generation",i)
         print(fittest_individual(scored_pop))
+
+genetic_algorithm()
