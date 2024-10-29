@@ -43,19 +43,26 @@ def gen_individual(matrix:list):
     print(test_set)
     return test_set
 
-proc_matrix = process_input(matrix)
-
-def gen_population():
+def gen_population(matrix:list):
     population = []
     for i in range(pop_size):
-        individual = gen_individual()
+        individual = gen_individual(matrix)
         population.append([individual,0])
+        print("Individual: ", i, individual)
     return population
 
 def eval_population(population:list):
     for i in range(len(population)):
         population[i][1] = fitness(population[i][0])
     return population
+
+
+proc_matrix = process_input(matrix)
+gen_population(proc_matrix)
+
+
+
+
 
 def fittest_individual(population:list):
     best = min(population, key=lambda x: abs(fitness(x[0])))
