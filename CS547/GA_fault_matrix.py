@@ -13,10 +13,11 @@ matrix = lines[0:5]
 
 # Constants
 random.seed(42) 
-pop_size=50
+pop_size=10
 crossover_rate = 0.75
 mutation_rate = 0.03
 
+# Processes input into usable state (Comma separated list)
 def process_input(input:list):
     for i in range(len(input)):
         # Delimiting string by commas
@@ -24,44 +25,75 @@ def process_input(input:list):
         input[i] = (input[i][0:length]).split(',')
     return input
 
-def fitness(input:str):
-    fitness = 0
-    input.pop(0) # Remove first element
-    print(input)
-    # For each test in input string
-    for i in range(len(input)):
-        # If test finds fault , append 1 to fitness value
-        if input[i] == '1':
-            print("Adding 1 to fitness")
-            fitness += 1
-    # return fitness value
-    return fitness
+#     FUNCTION CalculateAPFD(testSuite, faults):
+def fitness(suite:list):
+    faults = []
+    for test in suite:
+        test.pop(0)
+        faults.append(test)
+#     n = LENGTH(testSuite)  // Number of test cases
+    n = len(suite)
+    print("n value:",n)
+#     m = LENGTH(faults)     // Number of faults
+    m = len(faults)
+    print("m value:", m)
+#     totalFaultsRevealed = 0
+    totalFaultsRevealed = 0
+#     sumOfFirstReveals = 0
+    sumOfFirstReveals = 0
+
+    max_length = max(len(faults[0]) for sublist in faults)
+#     FOR each fault in faults:
+    # Determine the maximum number of elements in the sublists
+    for i in range(max_length):
+        for j,fault in enumerate(faults):
+            if i < len(fault):  # Check if the index exists in the sublist
+                print("Index:",i)
+                print("Fault number", j)
+                print(fault[i])
+                if fault[i] =='1':
+                    print("Found fault at:", fault[j])
+                # TFi = Index of the first test case in testSuite that reveals fault
+                    Tfi = j
+                # sumOfFirstReveals += TFi
+                    sumOfFirstReveals += Tfi
+    # totalFaultsRevealed = sumOfFirstReveals
+    totalFaultsRevealed = sumOfFirstReveals
+    print(totalFaultsRevealed)
+
+#     // Calculate APFD using the formula
+#     APFD = 1 - (totalFaultsRevealed / (n * m) + (1 / (2 * n)))
+    APFD = 1 - (totalFaultsRevealed / (n * m) + (1 / (2 * n)))
+    print(APFD)
+#     RETURN APFD
+    return APFD
 
 # Generate random configuration of test case ordering
 def gen_individual(matrix:list):
     test_set = random.sample(matrix, len(matrix))
-    print(test_set)
     return test_set
 
+# Generates a population of individuals
 def gen_population(matrix:list):
     population = []
     for i in range(pop_size):
         individual = gen_individual(matrix)
         population.append([individual,0])
-        print("Individual: ", i, individual)
+        #print("Individual: ", i, [individual,0])
     return population
 
 def eval_population(population:list):
     for i in range(len(population)):
         population[i][1] = fitness(population[i][0])
+        print(population[i][0])
     return population
 
+proc_matrix = process_input(matrix) # Process the input
 
-proc_matrix = process_input(matrix)
-gen_population(proc_matrix)
+population = gen_population(proc_matrix) # Generate population from processed input
 
-
-
+fitness(population[0][0])
+print(population[0][0])
 
 
 def fittest_individual(population:list):
