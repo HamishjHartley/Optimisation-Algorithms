@@ -77,12 +77,11 @@ proc_matrix = process_input(matrix) # Process the input
 population = gen_population(proc_matrix) # Generate population from processed input
 
 scored = eval_population(population)
-print(scored)
-
 
 def fittest_individual(population:list):
-    best = min(population, key=lambda x: abs(fitness(x[0])))
-    return best
+    max_value = max(population, key=lambda x: x[1])
+    print(max_value)
+    return max_value
     
 def find_top_50(population:list):
     top_50 = []
