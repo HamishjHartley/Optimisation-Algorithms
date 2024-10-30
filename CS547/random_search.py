@@ -66,7 +66,11 @@ def evaluate_random_solutions(target_number):
     random_solutions = gen_population(matrix,target_number)
     random_solutions = eval_population(random_solutions)
     best = fittest_individual(random_solutions)
-    print(best)
+    print("APFD value:",best[1])
     return best
 
+evaluate_random_solutions(10)
+evaluate_random_solutions(100)
+evaluate_random_solutions(1000)
 evaluate_random_solutions(10000)
+evaluate_random_solutions(100000)
