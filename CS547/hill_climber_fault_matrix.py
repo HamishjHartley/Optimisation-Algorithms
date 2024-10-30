@@ -5,10 +5,19 @@ import random
 with open('C:/Users/theha/OneDrive/Documents/GitHub/Optimisation-Algorithms/CS547/newsmallfaultmatrix.txt') as f: lines = f.readlines()
 
 # Simplifing for 5 inputs
-matrix = lines[0:5]
+matrix = lines
 
 # Constants
-random.seed(42) 
+random.seed(250) 
+n_iterations = 1001
+
+# Processes input into usable state (Comma separated list)
+def process_input(input:list):
+    for i in range(len(input)):
+        # Delimiting string by commas
+        length = len(input[i])-1
+        input[i] = (input[i][0:length]).split(',')
+    return input
 
 # Calculate Average Percentage of faults detected, determining fitness of solution
 def fitness(suite:list):
@@ -38,7 +47,8 @@ def fitness(suite:list):
 
 def hill_climb():
     # Initialize with a random string of the same length as the target
-    initial = test_set = random.sample(matrix, len(matrix))
+    proc_matrix = process_input(matrix)
+    initial = random.sample(proc_matrix, len(proc_matrix))
 
     # If initial state is a goal state, print success and return
     if fitness(initial) == 1:
@@ -48,25 +58,40 @@ def hill_climb():
     # Set the initial state as the current state and initialize variables
     curr = initial
 
+    curr_visited_list = []
+    for i in range(len(curr)):
+
+        curr_visited_list.append(curr[i][0])
+
+    print(curr_visited_list)
+    # Create set to store the visited list configurations
+    visited_set = set(curr_visited_list)
+    print("Visited set", visited_set)
+
+
     i = 0
+    print("Generation", i)
     # Loop until a solution is found or no new states can improve the score
-    while fitness(curr) < 1:
-        print("Iteration", i)
+    for i in range(n_iterations):
+        print("Generation", i)
         i += 1
 
         # Generate a unique new state that hasn't been visited
-        new = curr
+        new = curr.copy()
+        
         #while new in visited_states:
         # Randomly modify ordering of two tests in the current state
         test_1 = random.randint(0, len(curr) - 1)
         test_2 = random.randint(0, len(curr) - 1)
         new[test_1] , new[test_2] = new[test_2] , new[test_1]
 
+        #print(fitness(curr), fitness(new))
+
         # Add the new state to visited states
         #visited_states.add(new)
         
         # Evaluate the new state
-        print(new, "Fitness:", fitness(new))
+        #print(new, "Fitness:", fitness(new))
 
         # If the new state is the goal, print success and break
         if fitness(new) == 1:
@@ -77,5 +102,7 @@ def hill_climb():
         if fitness(new) > fitness(curr):
             print("Improvement found, updating current state.")
             curr = new
+
+        print("APFD value:",fitness(curr))
 
 hill_climb()

@@ -5,17 +5,16 @@ from random import shuffle
 # Identify test cases which have the highest coverage
 
 # Input text file
-with open('C:/Users/theha/OneDrive/Documents/GitHub/Optimisation-Algorithms/CS547/newsmallfaultmatrix.txt') as f: lines = f.readlines()
+with open('C:/Users/theha/OneDrive/Documents/GitHub/Optimisation-Algorithms/CS547/newbigfaultmatrix.txt') as f: lines = f.readlines()
 
-# Simplifing for 5 inputs
 matrix = lines
 
-
 # Constants
-random.seed(42) 
+random.seed(150) 
 pop_size=50
 crossover_rate = 0.75
 mutation_rate = 0.005
+n_iterations = 1000
 
 # Processes input into usable state (Comma separated list)
 def process_input(input:list):
@@ -129,7 +128,7 @@ def genetic_algorithm():
     i = 0
     print("Generation",i)
     print(fittest_individual(scored_pop))
-    while fittest_individual(scored_pop)[1] < 1:
+    for i in range(n_iterations):
         i += 1
         new_pop = []
         new_pop = select_and_generate_new_population(scored_pop)

@@ -31,9 +31,12 @@ def hill_climb():
     curr = initial
     visited_states = set([curr])
 
+    print("curr", curr)
+    print("Visited states",visited_states)
+
     i = 0
     # Loop until a solution is found or no new states can improve the score
-    while fitness(curr) < 0:
+    while fitness(curr) == 0:
         print("Iteration", i)
         i += 1
 
