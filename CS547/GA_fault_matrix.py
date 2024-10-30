@@ -5,10 +5,11 @@ from random import shuffle
 # Identify test cases which have the highest coverage
 
 # Input text file
-with open('C:/Users/theha/Documents/GitHub/Optimisation-Algorithms/CS547/newsmallfaultmatrix.txt') as f: lines = f.readlines()
+with open('C:/Users/theha/OneDrive/Documents/GitHub/Optimisation-Algorithms/CS547/newsmallfaultmatrix.txt') as f: lines = f.readlines()
 
 # Simplifing for 5 inputs
 matrix = lines
+
 
 # Constants
 random.seed(42) 
