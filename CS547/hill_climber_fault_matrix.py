@@ -9,7 +9,7 @@ matrix = lines
 
 # Constants
 random.seed(250) 
-n_iterations = 1001
+n_iterations = 1000
 
 # Processes input into usable state (Comma separated list)
 def process_input(input:list):
@@ -58,17 +58,6 @@ def hill_climb():
     # Set the initial state as the current state and initialize variables
     curr = initial
 
-    curr_visited_list = []
-    for i in range(len(curr)):
-
-        curr_visited_list.append(curr[i][0])
-
-    print(curr_visited_list)
-    # Create set to store the visited list configurations
-    visited_set = set(curr_visited_list)
-    print("Visited set", visited_set)
-
-
     i = 0
     print("Generation", i)
     # Loop until a solution is found or no new states can improve the score
@@ -84,14 +73,6 @@ def hill_climb():
         test_1 = random.randint(0, len(curr) - 1)
         test_2 = random.randint(0, len(curr) - 1)
         new[test_1] , new[test_2] = new[test_2] , new[test_1]
-
-        #print(fitness(curr), fitness(new))
-
-        # Add the new state to visited states
-        #visited_states.add(new)
-        
-        # Evaluate the new state
-        #print(new, "Fitness:", fitness(new))
 
         # If the new state is the goal, print success and break
         if fitness(new) == 1:
